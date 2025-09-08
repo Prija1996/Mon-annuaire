@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Annuaire - Annuaire des entreprises et formations à Madagascar</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS for map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Mon Annuaire</h1>
+            <nav>
+                <ul>
+                    <li><a href="#entreprises">Entreprises</a></li>
+                    <li><a href="#formations">Formations</a></li>
+                    <li><a href="#inscription">S'inscrire</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="search-section" class="container">
+            <h2>Rechercher des entreprises</h2>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Rechercher par nom, secteur...">
+                <button id="search-btn">Rechercher</button>
+            </div>
+            <div class="filters">
+                <select id="category-filter">
+                    <option value="">Toutes les catégories</option>
+                    <option value="informatique">Informatique</option>
+                    <option value="commerce">Commerce</option>
+                    <option value="services">Services</option>
+                    <!-- Add more categories as needed -->
+                </select>
+                <select id="region-filter">
+                    <option value="">Toutes les régions</option>
+                    <option value="antananarivo">Antananarivo</option>
+                    <option value="antsiranana">Antsiranana</option>
+                    <!-- Add more regions -->
+                </select>
+            </div>
+        </section>
+
+        <section id="results-section" class="container">
+            <div id="results-list">
+                <!-- Business cards will be inserted here via JS -->
+            </div>
+        </section>
+
+        <section id="map-section" class="container">
+            <h2>Carte des entreprises</h2>
+            <div id="map"></div>
+        </section>
+
+        <section id="signup-section" class="container">
+            <h2>Inscrivez votre entreprise</h2>
+            <form id="signup-form">
+                <label for="company-name">Nom de l'entreprise:</label>
+                <input type="text" id="company-name" required>
+
+                <label for="category">Catégorie:</label>
+                <select id="category" required>
+                    <option value="">Sélectionnez une catégorie</option>
+                    <option value="informatique">Informatique</option>
+                    <option value="commerce">Commerce</option>
+                    <!-- Add more -->
+                </select>
+
+                <label for="description">Description:</label>
+                <textarea id="description" required></textarea>
+
+                <label for="contact">Contact:</label>
+                <input type="text" id="contact" required>
+
+                <label for="address">Adresse:</label>
+                <input type="text" id="address" required>
+
+                <button type="submit">S'inscrire</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Mon Annuaire. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
