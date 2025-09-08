@@ -158,14 +158,42 @@ function handleSignup(event) {
             const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             localStorage.setItem('oauth_state', state);
 
+            // Générer PKCE code_verifier et code_challenge
+            const codeVerifier = generateCodeVerifier();
+            const codeChallenge = generateCodeChallenge(codeVerifier);
+            localStorage.setItem('oauth_code_verifier', codeVerifier);
+
             const authUrl = `https://airtable.com/oauth2/v1/authorize?` +
                 `client_id=${CLIENT_ID}&` +
                 `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
                 `response_type=code&` +
                 `state=${state}&` +
+                `code_challenge=${codeChallenge}&` +
+                `code_challenge_method=S256&` +
                 `scope=data.records:read data.records:write`; // Ajustez les scopes selon vos besoins
 
             window.location.href = authUrl;
+        }
+
+        // Fonction pour générer un code_verifier PKCE
+        function generateCodeVerifier() {
+            const array = new Uint8Array(32);
+            crypto.getRandomValues(array);
+            return base64URLEncode(array);
+        }
+
+        // Fonction pour générer un code_challenge PKCE
+        async function generateCodeChallenge(codeVerifier) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(codeVerifier);
+            const digest = await crypto.subtle.digest('SHA-256', data);
+            return base64URLEncode(new Uint8Array(digest));
+        }
+
+        // Fonction pour encoder en base64url
+        function base64URLEncode(array) {
+            const base64 = btoa(String.fromCharCode.apply(null, array));
+            return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
         }
 
 // Fonction pour vérifier si l'utilisateur est connecté

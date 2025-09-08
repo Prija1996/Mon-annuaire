@@ -43,7 +43,10 @@
 
         // Fonction pour échanger le code contre un token
         async function exchangeCodeForToken(code) {
+            const codeVerifier = localStorage.getItem('oauth_code_verifier');
+
             console.log('Échange du code:', code);
+            console.log('Code verifier:', codeVerifier);
             console.log('Client ID:', CLIENT_ID);
             console.log('Redirect URI:', REDIRECT_URI);
 
@@ -57,7 +60,8 @@
                     code: code,
                     client_id: CLIENT_ID,
                     client_secret: CLIENT_SECRET,
-                    redirect_uri: REDIRECT_URI
+                    redirect_uri: REDIRECT_URI,
+                    code_verifier: codeVerifier
                 })
             });
 
@@ -111,8 +115,9 @@
                 const tokenData = await exchangeCodeForToken(code);
                 console.log('Token reçu:', tokenData);
 
-                // Nettoyer le state
+                // Nettoyer les données OAuth
                 localStorage.removeItem('oauth_state');
+                localStorage.removeItem('oauth_code_verifier');
 
                 // Stocker le token dans localStorage
                 localStorage.setItem('airtable_access_token', tokenData.access_token);
