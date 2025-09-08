@@ -180,6 +180,20 @@ h2 {
     background-color: var(--antique-fuchsia);
 }
 
+.auth-section button {
+    padding: 0.5rem 1rem;
+    background-color: var(--blue-yonder);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.auth-section button:hover {
+    background-color: var(--b-dazzled-blue);
+}
+
 footer {
     background-color: var(--oxford-blue);
     color: white;
