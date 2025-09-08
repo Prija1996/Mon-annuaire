@@ -77,10 +77,21 @@
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
             const error = urlParams.get('error');
+            const state = urlParams.get('state');
+            const storedState = localStorage.getItem('oauth_state');
 
             console.log('Paramètres URL:', window.location.search);
             console.log('Code:', code);
-            console.log('Erreur:', error);
+            console.log('State reçu:', state);
+            console.log('State stocké:', storedState);
+
+            // Vérifier le state pour la sécurité
+            if (state !== storedState) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = 'Erreur de sécurité : State invalide';
+                return;
+            }
 
             if (error) {
                 document.getElementById('loading').style.display = 'none';
@@ -99,6 +110,9 @@
             try {
                 const tokenData = await exchangeCodeForToken(code);
                 console.log('Token reçu:', tokenData);
+
+                // Nettoyer le state
+                localStorage.removeItem('oauth_state');
 
                 // Stocker le token dans localStorage
                 localStorage.setItem('airtable_access_token', tokenData.access_token);

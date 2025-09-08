@@ -154,10 +154,15 @@ function handleSignup(event) {
 
         // Fonction pour initier l'authentification
         function initiateAuth() {
+            // Générer un state aléatoire pour la sécurité
+            const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            localStorage.setItem('oauth_state', state);
+
             const authUrl = `https://airtable.com/oauth2/v1/authorize?` +
                 `client_id=${CLIENT_ID}&` +
                 `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
                 `response_type=code&` +
+                `state=${state}&` +
                 `scope=data.records:read data.records:write`; // Ajustez les scopes selon vos besoins
 
             window.location.href = authUrl;
