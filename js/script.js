@@ -153,14 +153,14 @@ function handleSignup(event) {
         const REDIRECT_URI = 'https://mon-annuaire.vercel.app/callback.html';
 
         // Fonction pour initier l'authentification
-        function initiateAuth() {
+        async function initiateAuth() {
             // Générer un state aléatoire pour la sécurité
             const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             localStorage.setItem('oauth_state', state);
 
             // Générer PKCE code_verifier et code_challenge
             const codeVerifier = generateCodeVerifier();
-            const codeChallenge = generateCodeChallenge(codeVerifier);
+            const codeChallenge = await generateCodeChallenge(codeVerifier);
             localStorage.setItem('oauth_code_verifier', codeVerifier);
 
             const authUrl = `https://airtable.com/oauth2/v1/authorize?` +
