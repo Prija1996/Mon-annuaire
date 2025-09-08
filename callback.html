@@ -31,7 +31,7 @@
         // Configuration OAuth 2.0 - À remplacer par vos vraies valeurs
         const CLIENT_ID = '97b8fdcd-2b97-4554-9dc4-80f739432375'; // Remplacez par votre Client ID Airtable
         const CLIENT_SECRET = '662a79e7e7b518be5773d044199e07c306dfe8eb4e92e34ebc58fdc8eb4bdf10'; // Attention : dans un vrai projet, ne pas exposer le secret côté client
-        const REDIRECT_URI = 'https://prija1996.github.io/Mon-annuaire/callback.html'; // URL exacte de cette page
+        const REDIRECT_URI = 'https://mon-annuaire.vercel.app/callback.html';
 
         // Fonction pour obtenir les paramètres de l'URL
         function getUrlParameter(name) {
@@ -43,6 +43,10 @@
 
         // Fonction pour échanger le code contre un token
         async function exchangeCodeForToken(code) {
+            console.log('Échange du code:', code);
+            console.log('Client ID:', CLIENT_ID);
+            console.log('Redirect URI:', REDIRECT_URI);
+
             const response = await fetch('https://airtable.com/oauth2/v1/token', {
                 method: 'POST',
                 headers: {
@@ -57,8 +61,12 @@
                 })
             });
 
+            console.log('Réponse du serveur:', response.status, response.statusText);
+
             if (!response.ok) {
-                throw new Error('Erreur lors de l\'échange du code');
+                const errorText = await response.text();
+                console.error('Erreur détaillée:', errorText);
+                throw new Error(`Erreur ${response.status}: ${errorText}`);
             }
 
             return await response.json();
@@ -66,8 +74,13 @@
 
         // Fonction principale
         async function handleCallback() {
-            const code = getUrlParameter('code');
-            const error = getUrlParameter('error');
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const error = urlParams.get('error');
+
+            console.log('Paramètres URL:', window.location.search);
+            console.log('Code:', code);
+            console.log('Erreur:', error);
 
             if (error) {
                 document.getElementById('loading').style.display = 'none';
@@ -79,12 +92,13 @@
             if (!code) {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('error').style.display = 'block';
-                document.getElementById('error').textContent = 'Code d\'autorisation manquant';
+                document.getElementById('error').textContent = 'Code d\'autorisation manquant dans l\'URL';
                 return;
             }
 
             try {
                 const tokenData = await exchangeCodeForToken(code);
+                console.log('Token reçu:', tokenData);
 
                 // Stocker le token dans localStorage
                 localStorage.setItem('airtable_access_token', tokenData.access_token);
@@ -104,7 +118,7 @@
                 console.error('Erreur lors de l\'authentification:', err);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('error').style.display = 'block';
-                document.getElementById('error').textContent = 'Erreur lors de l\'échange du token. Vérifiez vos paramètres OAuth.';
+                document.getElementById('error').textContent = `Erreur lors de l'échange du token: ${err.message}`;
             }
         }
 

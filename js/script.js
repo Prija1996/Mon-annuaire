@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeMap();
     displayBusinesses(sampleBusinesses);
     setupEventListeners();
+    updateAuthUI(); // Ajouter cette ligne pour vérifier l'auth au chargement
 });
 
 function initializeMap() {
@@ -149,16 +150,18 @@ function handleSignup(event) {
 
         // Configuration OAuth 2.0
         const CLIENT_ID = '97b8fdcd-2b97-4554-9dc4-80f739432375'; // Remplacez par votre Client ID Airtable
-        const REDIRECT_URI = 'https://prija1996.github.io/Mon-annuaire/callback.html';// Fonction pour initier l'authentification
-function initiateAuth() {
-    const authUrl = `https://airtable.com/oauth2/v1/authorize?` +
-        `client_id=${CLIENT_ID}&` +
-        `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
-        `response_type=code&` +
-        `scope=data.records:read data.records:write`; // Ajustez les scopes selon vos besoins
+        const REDIRECT_URI = 'https://mon-annuaire.vercel.app/callback.html';
 
-    window.location.href = authUrl;
-}
+        // Fonction pour initier l'authentification
+        function initiateAuth() {
+            const authUrl = `https://airtable.com/oauth2/v1/authorize?` +
+                `client_id=${CLIENT_ID}&` +
+                `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
+                `response_type=code&` +
+                `scope=data.records:read data.records:write`; // Ajustez les scopes selon vos besoins
+
+            window.location.href = authUrl;
+        }
 
 // Fonction pour vérifier si l'utilisateur est connecté
 function isAuthenticated() {
@@ -174,9 +177,11 @@ async function fetchAirtableData() {
     }
 
     try {
-                // Remplacez par votre vraie base ID et table name
-                const baseId = 'appqtAYbe7ZtJICJj';
-                const tableName = 'Entreprises';        const response = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
+        // Remplacez par votre vraie base ID et table name
+        const baseId = 'appqtAYbe7ZtJICJj';
+        const tableName = 'Fiches';
+
+        const response = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -213,8 +218,10 @@ async function submitBusiness(formData) {
     }
 
     try {
-                const baseId = 'appqtAYbe7ZtJICJj';
-                const tableName = 'Entreprises';        const response = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
+        const baseId = 'appqtAYbe7ZtJICJj';
+        const tableName = 'Fiches';
+
+        const response = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
