@@ -1,0 +1,17 @@
+{
+  "name": "mon-annuaire",
+  "version": "1.0.0",
+  "description": "Annuaire numérique pour les entreprises et formations à Madagascar",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'",
+    "start": "vercel dev"
+  },
+  "keywords": ["annuaire", "madagascar", "entreprises"],
+  "author": "Prija1996",
+  "license": "MIT",
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  }
+}

@@ -28,9 +28,9 @@
     <div id="error" class="error" style="display: none;">Erreur lors de l'authentification. Veuillez réessayer.</div>
 
     <script>
-        // Configuration OAuth 2.0 - À remplacer par vos vraies valeurs
-        const CLIENT_ID = '97b8fdcd-2b97-4554-9dc4-80f739432375'; // Remplacez par votre Client ID Airtable
-        const REDIRECT_URI = 'https://mon-annuaire.vercel.app/callback.html';
+        // Configuration OAuth 2.0
+        const CLIENT_ID = '97b8fdcd-2b97-4554-9dc4-80f739432375'; // À remplacer par votre vrai Client ID
+        const REDIRECT_URI = window.location.origin + '/callback.html';
 
         // Fonction pour obtenir les paramètres de l'URL
         function getUrlParameter(name) {

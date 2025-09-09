@@ -28,6 +28,8 @@ const sampleBusinesses = [
 let map;
 let markers = [];
 
+// Configuration is loaded globally from config.js
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     initializeMap();
@@ -149,8 +151,8 @@ function handleSignup(event) {
 }
 
         // Configuration OAuth 2.0
-        const CLIENT_ID = '97b8fdcd-2b97-4554-9dc4-80f739432375'; // Remplacez par votre Client ID Airtable
-        const REDIRECT_URI = 'https://mon-annuaire.vercel.app/callback.html';
+        const CLIENT_ID = window.config.AIRTABLE_CLIENT_ID;
+        const REDIRECT_URI = window.config.getRedirectUri();
 
         // Fonction pour initier l'authentification
         async function initiateAuth() {
@@ -210,9 +212,9 @@ async function fetchAirtableData() {
     }
 
     try {
-        // Remplacez par votre vraie base ID et table name
-        const baseId = 'appqtAYbe7ZtJICJj';
-        const tableName = 'Fiches';
+        // Utilisation de la configuration
+        const baseId = window.config.AIRTABLE_BASE_ID;
+        const tableName = window.config.AIRTABLE_TABLE_NAME;
 
         const response = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
             headers: {
@@ -251,8 +253,8 @@ async function submitBusiness(formData) {
     }
 
     try {
-        const baseId = 'appqtAYbe7ZtJICJj';
-        const tableName = 'Fiches';
+        const baseId = window.config.AIRTABLE_BASE_ID;
+        const tableName = window.config.AIRTABLE_TABLE_NAME;
 
         const response = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
             method: 'POST',
