@@ -67,25 +67,45 @@
         <section id="signup-section" class="container">
             <h2>Inscrivez votre entreprise</h2>
             <form id="signup-form">
-                <label for="company-name">Nom de l'entreprise:</label>
+                <label for="company-name">Nom de l'entité:</label>
                 <input type="text" id="company-name" required>
 
                 <label for="category">Catégorie:</label>
                 <select id="category" required>
                     <option value="">Sélectionnez une catégorie</option>
-                    <option value="informatique">Informatique</option>
-                    <option value="commerce">Commerce</option>
-                    <!-- Add more -->
+                    <option value="Formation">Formation</option>
+                    <option value="Entreprise">Entreprise</option>
+                    <option value="Artisanat">Artisanat</option>
                 </select>
 
                 <label for="description">Description:</label>
                 <textarea id="description" required></textarea>
 
-                <label for="contact">Contact:</label>
-                <input type="text" id="contact" required>
+                <label for="contact">Contact (Téléphone):</label>
+                <input type="tel" id="contact" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
 
                 <label for="address">Adresse:</label>
                 <input type="text" id="address" required>
+
+                <label for="region">Région:</label>
+                <select id="region" required>
+                    <option value="">Sélectionnez une région</option>
+                    <option value="Antananarivo">Antananarivo</option>
+                    <option value="Antsiranana">Antsiranana</option>
+                    <option value="Mahajanga">Mahajanga</option>
+                    <option value="Toamasina">Toamasina</option>
+                    <option value="Fianarantsoa">Fianarantsoa</option>
+                    <option value="Toliara">Toliara</option>
+                </select>
+
+                <label for="website">Site web (optionnel):</label>
+                <input type="url" id="website" placeholder="https://...">
+
+                <label for="social-media">Réseaux sociaux (optionnel):</label>
+                <input type="url" id="social-media" placeholder="https://facebook.com/...">
 
                 <button type="submit">S'inscrire</button>
             </form>
@@ -101,6 +121,8 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="js/config.js"></script>
+    <script src="js/oauth-test.js"></script>
+    <script src="js/diagnostic.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

@@ -33,9 +33,8 @@ let markers = [];
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     initializeMap();
-    displayBusinesses(sampleBusinesses);
     setupEventListeners();
-    updateAuthUI(); // Ajouter cette ligne pour vérifier l'auth au chargement
+    updateAuthUI(); // Ceci va charger les bonnes données selon l'état d'auth
 });
 
 function initializeMap() {
@@ -135,8 +134,19 @@ function handleSignup(event) {
         category: document.getElementById('category').value,
         description: document.getElementById('description').value,
         contact: document.getElementById('contact').value,
-        address: document.getElementById('address').value
+        email: document.getElementById('email').value,
+        address: document.getElementById('address').value,
+        region: document.getElementById('region').value,
+        website: document.getElementById('website').value || null,
+        socialMedia: document.getElementById('social-media').value || null
     };
+
+    console.log('📝 [FORM] Données collectées du formulaire:');
+    console.log('📝 [FORM] Nom:', formData.name);
+    console.log('📝 [FORM] Catégorie brute:', formData.category);
+    console.log('📝 [FORM] Catégorie type:', typeof formData.category);
+    console.log('📝 [FORM] Catégorie length:', formData.category?.length);
+    console.log('📝 [FORM] Toutes les données:', JSON.stringify(formData, null, 2));
 
     if (isAuthenticated()) {
         // Soumettre à Airtable
@@ -156,27 +166,75 @@ function handleSignup(event) {
 
         // Fonction pour initier l'authentification
         async function initiateAuth() {
-            // Générer un state aléatoire pour la sécurité
-            const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-            localStorage.setItem('oauth_state', state);
+            console.log('======= DEBUT initiateAuth =======');
+            console.log('Timestamp:', new Date().toISOString());
+            console.log('Client ID disponible:', !!CLIENT_ID);
+            console.log('Redirect URI disponible:', !!REDIRECT_URI);
 
-            // Générer PKCE code_verifier et code_challenge
+            if (!CLIENT_ID || !REDIRECT_URI) {
+                console.error('ERREUR: Client ID ou Redirect URI manquant');
+                console.log('Client ID:', CLIENT_ID);
+                console.log('Redirect URI:', REDIRECT_URI);
+                return;
+            }
+
+            console.log('Demarrage authentification OAuth');
+            console.log('Client ID:', CLIENT_ID);
+            console.log('Redirect URI:', REDIRECT_URI);
+
+            // Generer un state aleatoire pour la securite
+            const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            console.log('State genere:', `"${state}"`);
+            localStorage.setItem('oauth_state', state);
+            console.log('State stocke dans localStorage');
+
+            // Générer les paramètres PKCE pour Airtable
+            console.log('Génération des paramètres PKCE...');
             const codeVerifier = generateCodeVerifier();
             const codeChallenge = await generateCodeChallenge(codeVerifier);
             localStorage.setItem('oauth_code_verifier', codeVerifier);
+            console.log('Code verifier généré et stocké');
+            console.log('Code challenge généré:', codeChallenge);
 
-            const authUrl = `https://airtable.com/oauth2/v1/authorize?` +
-                `client_id=${CLIENT_ID}&` +
-                `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
-                `response_type=code&` +
-                `state=${state}&` +
-                `code_challenge=${codeChallenge}&` +
-                `code_challenge_method=S256&` +
-                `scope=data.records:read data.records:write`; // Ajustez les scopes selon vos besoins
+            // Construction étape par étape de l'URL
+            console.log('Construction de l\'URL étape par étape:');
+            const baseUrl = 'https://airtable.com/oauth2/v1/authorize';
+            const params = new URLSearchParams();
+
+            params.append('client_id', CLIENT_ID);
+            params.append('redirect_uri', REDIRECT_URI); // Pas d'encodage ici, URLSearchParams le fait
+            params.append('response_type', 'code');
+            params.append('state', state);
+            params.append('scope', 'data.records:read data.records:write');
+            params.append('code_challenge', codeChallenge);
+            params.append('code_challenge_method', 'S256');
+
+            const authUrl = `${baseUrl}?${params.toString()}`;
+
+            console.log('� Paramètres individuels:');
+            for (let [key, value] of params) {
+                console.log(`  ${key}: "${value}"`);
+            }
+            console.log('URL finale:', authUrl);
+
+            // Vérification avec URL constructor
+            try {
+                const url = new URL(authUrl);
+                console.log('Vérification URL:');
+                console.log('  Host:', url.host);
+                console.log('  Path:', url.pathname);
+                console.log('  Paramètres vérifiés:');
+                for (let [key, value] of url.searchParams) {
+                    console.log(`    ${key}: "${value}"`);
+                }
+            } catch (error) {
+                console.error('Erreur URL:', error);
+            }
 
             window.location.href = authUrl;
         }
 
+        // Fonctions PKCE pour Airtable OAuth
         // Fonction pour générer un code_verifier PKCE
         function generateCodeVerifier() {
             const array = new Uint8Array(32);
@@ -229,14 +287,19 @@ async function fetchAirtableData() {
         const data = await response.json();
         return data.records.map(record => ({
             id: record.id,
-            name: record.fields.Nom || '',
-            category: record.fields.Catégorie || '',
-            description: record.fields.Description || '',
-            contact: record.fields.Contact || '',
-            address: record.fields.Adresse || '',
+            name: record.fields["Nom de l'entité"] || '',
+            category: record.fields["Catégorie"] || '',
+            description: record.fields["Description"] || '',
+            contact: record.fields["Contact"] || '',
+            email: record.fields["Email"] || '',
+            address: record.fields["Adresse"] || '',
+            region: record.fields["Région"] || '',
+            website: record.fields["Lien du site web"] || '',
+            socialMedia: record.fields["Réseaux Sociaux"] || '',
+            status: record.fields["Statut"] || '',
             lat: record.fields.Latitude || -18.8792,
             lng: record.fields.Longitude || 47.5079,
-            rating: record.fields.Note || 0
+            rating: record.fields["Avis"] || 0
         }));
     } catch (error) {
         console.error('Erreur lors de la récupération des données Airtable:', error);
@@ -256,33 +319,85 @@ async function submitBusiness(formData) {
         const baseId = window.config.AIRTABLE_BASE_ID;
         const tableName = window.config.AIRTABLE_TABLE_NAME;
 
+        console.log('📤 Envoi des données à Airtable...');
+        console.log('Base ID:', baseId);
+        console.log('Table:', tableName);
+        console.log('🔍 [SUBMIT] Données reçues:', formData);
+        console.log('🔍 [SUBMIT] Catégorie avant traitement:', formData.category);
+
+        const airtableFields = {
+            "Nom de l'entité": formData.name,
+            "Catégorie": formData.category,
+            "Description": formData.description,
+            "Contact": formData.contact,
+            "Email": formData.email,
+            "Adresse": formData.address,
+            "Région": formData.region,
+            "Statut": "En attente de validation" // Valeur par défaut pour modération
+        };
+
+        console.log('🔍 [SUBMIT] Valeur exacte pour Catégorie:', airtableFields["Catégorie"]);
+        console.log('🔍 [SUBMIT] Type de la catégorie:', typeof airtableFields["Catégorie"]);
+        console.log('🔍 [SUBMIT] Caractères de la catégorie:', Array.from(airtableFields["Catégorie"] || '').map(c => `${c} (${c.charCodeAt(0)})`));
+
+        // Ajouter les champs optionnels seulement s'ils ont une valeur
+        if (formData.website) {
+            airtableFields["Lien du site web"] = formData.website;
+        }
+        if (formData.socialMedia) {
+            airtableFields["Réseaux Sociaux"] = formData.socialMedia;
+        }
+
+        console.log('🔍 Champs Airtable à envoyer:', airtableFields);
+
+        const requestBody = {
+            fields: airtableFields
+        };
+
+        console.log('🚀 [REQUEST] Corps de la requête complet:', JSON.stringify(requestBody, null, 2));
+        console.log('🚀 [REQUEST] JSON string brut:', JSON.stringify(requestBody));
+
         const response = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                fields: {
-                    Nom: formData.name,
-                    Catégorie: formData.category,
-                    Description: formData.description,
-                    Contact: formData.contact,
-                    Adresse: formData.address,
-                    // Ajoutez d'autres champs si nécessaire
-                }
-            })
+            body: JSON.stringify(requestBody)
         });
 
+        const responseData = await response.json();
+        console.log('📡 Réponse Airtable:', response.status, responseData);
+
         if (!response.ok) {
-            throw new Error('Erreur lors de la soumission');
+            console.error('❌ Erreur Airtable:', responseData);
+            console.error('❌ Détails de l\'erreur:', JSON.stringify(responseData, null, 2));
+            
+            // Extraire le message d'erreur spécifique
+            let errorMessage = 'Unknown error';
+            if (responseData.error) {
+                if (responseData.error.message) {
+                    errorMessage = responseData.error.message;
+                } else if (responseData.error.type) {
+                    errorMessage = responseData.error.type;
+                } else {
+                    errorMessage = JSON.stringify(responseData.error);
+                }
+            }
+            
+            throw new Error(`Airtable error: ${errorMessage}`);
         }
 
-        alert('Entreprise soumise avec succès !');
-        return await response.json();
+        alert('✅ Entreprise soumise avec succès ! Elle sera visible après validation.');
+        console.log('✅ Succès:', responseData);
+        
+        // Recharger les données pour afficher la nouvelle entrée
+        loadBusinessesFromAirtable();
+        
+        return responseData;
     } catch (error) {
-        console.error('Erreur lors de la soumission:', error);
-        alert('Erreur lors de la soumission. Veuillez réessayer.');
+        console.error('💥 Erreur lors de la soumission:', error);
+        alert(`❌ Erreur lors de la soumission: ${error.message}`);
     }
 }
 

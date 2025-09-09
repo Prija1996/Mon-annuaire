@@ -1,0 +1,105 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Mon Annuaire - Airtable API Tests",
+  "dateExported": "2025-09-09T00:00:00.000Z",
+  "version": "1.1",
+  "folders": [],
+  "requests": [
+    {
+      "name": "GET - Lister toutes les fiches",
+      "url": "https://api.airtable.com/v0/appqtAYbe7ZtJICJj/Fiches",
+      "method": "GET",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer oaaVRPyvXbAuRtukc.v1.eyJ1c2VySWQiOiJ1c3Jnd2JuMkhRbktSWXYwNiIsImV4cGlyZXNBdCI6IjIwMjUtMDktMDlUMTI6NTc6MjUuMDAwWiIsIm9hdXRoQXBwbGljYXRpb25JZCI6Im9hcGk1bm1WQlRpUEJUZ2ZGIiwic2VjcmV0IjoiN2NjOWI1YzU2ZWRmZTUyNWE3ODBlZjgzY2RjOWE2ZmE4MWJhNmNhODg5M2FmZTM5ZTEzMjNmOTY4YmM4MGU1OCJ9.52d0cd6c146dd62ebda934f02142a7de345bc59ded03edb568a0d329d34aae05"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": ""
+      },
+      "tests": []
+    },
+    {
+      "name": "POST - Test Formation",
+      "url": "https://api.airtable.com/v0/appqtAYbe7ZtJICJj/Fiches",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer oaaVRPyvXbAuRtukc.v1.eyJ1c2VySWQiOiJ1c3Jnd2JuMkhRbktSWXYwNiIsImV4cGlyZXNBdCI6IjIwMjUtMDktMDlUMTI6NTc6MjUuMDAwWiIsIm9hdXRoQXBwbGljYXRpb25JZCI6Im9hcGk1bm1WQlRpUEJUZ2ZGIiwic2VjcmV0IjoiN2NjOWI1YzU2ZWRmZTUyNWE3ODBlZjgzY2RjOWE2ZmE4MWJhNmNhODg5M2FmZTM5ZTEzMjNmOTY4YmM4MGU1OCJ9.52d0cd6c146dd62ebda934f02142a7de345bc59ded03edb568a0d329d34aae05"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"fields\": {\n    \"Nom de l'entité\": \"Test Formation Thunder\",\n    \"Catégorie\": \"Formation\",\n    \"Description\": \"Centre de formation test via Thunder Client\",\n    \"Contact\": \"+261 34 12 345 67\",\n    \"Email\": \"test@formation.mg\",\n    \"Adresse\": \"Antananarivo, Madagascar\",\n    \"Région\": \"Antananarivo\",\n    \"Statut\": \"En attente\"\n  }\n}"
+      },
+      "tests": []
+    },
+    {
+      "name": "POST - Test Entreprise",
+      "url": "https://api.airtable.com/v0/appqtAYbe7ZtJICJj/Fiches",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer oaaVRPyvXbAuRtukc.v1.eyJ1c2VySWQiOiJ1c3Jnd2JuMkhRbktSWXYwNiIsImV4cGlyZXNBdCI6IjIwMjUtMDktMDlUMTI6NTc6MjUuMDAwWiIsIm9hdXRoQXBwbGljYXRpb25JZCI6Im9hcGk1bm1WQlRpUEJUZ2ZGIiwic2VjcmV0IjoiN2NjOWI1YzU2ZWRmZTUyNWE3ODBlZjgzY2RjOWE2ZmE4MWJhNmNhODg5M2FmZTM5ZTEzMjNmOTY4YmM4MGU1OCJ9.52d0cd6c146dd62ebda934f02142a7de345bc59ded03edb568a0d329d34aae05"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"fields\": {\n    \"Nom de l'entité\": \"Test Entreprise Thunder\",\n    \"Catégorie\": \"Entreprise\",\n    \"Description\": \"Entreprise de test via Thunder Client\",\n    \"Contact\": \"+261 34 12 345 67\",\n    \"Email\": \"test@entreprise.mg\",\n    \"Adresse\": \"Antananarivo, Madagascar\",\n    \"Région\": \"Antananarivo\",\n    \"Statut\": \"En attente\"\n  }\n}"
+      },
+      "tests": []
+    },
+    {
+      "name": "POST - Test Artisanat",
+      "url": "https://api.airtable.com/v0/appqtAYbe7ZtJICJj/Fiches",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer oaaVRPyvXbAuRtukc.v1.eyJ1c2VySWQiOiJ1c3Jnd2JuMkhRbktSWXYwNiIsImV4cGlyZXNBdCI6IjIwMjUtMDktMDlUMTI6NTc6MjUuMDAwWiIsIm9hdXRoQXBwbGljYXRpb25JZCI6Im9hcGk1bm1WQlRpUEJUZ2ZGIiwic2VjcmV0IjoiN2NjOWI1YzU2ZWRmZTUyNWE3ODBlZjgzY2RjOWE2ZmE4MWJhNmNhODg5M2FmZTM5ZTEzMjNmOTY4YmM4MGU1OCJ9.52d0cd6c146dd62ebda934f02142a7de345bc59ded03edb568a0d329d34aae05"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"fields\": {\n    \"Nom de l'entité\": \"Test Artisanat Thunder\",\n    \"Catégorie\": \"Artisanat\",\n    \"Description\": \"Atelier d'artisanat test via Thunder Client\",\n    \"Contact\": \"+261 34 12 345 67\",\n    \"Email\": \"test@artisanat.mg\",\n    \"Adresse\": \"Antananarivo, Madagascar\",\n    \"Région\": \"Antananarivo\",\n    \"Statut\": \"En attente\"\n  }\n}"
+      },
+      "tests": []
+    },
+    {
+      "name": "POST - Test avec tous les champs",
+      "url": "https://api.airtable.com/v0/appqtAYbe7ZtJICJj/Fiches",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer oaaVRPyvXbAuRtukc.v1.eyJ1c2VySWQiOiJ1c3Jnd2JuMkhRbktSWXYwNiIsImV4cGlyZXNBdCI6IjIwMjUtMDktMDlUMTI6NTc6MjUuMDAwWiIsIm9hdXRoQXBwbGljYXRpb25JZCI6Im9hcGk1bm1WQlRpUEJUZ2ZGIiwic2VjcmV0IjoiN2NjOWI1YzU2ZWRmZTUyNWE3ODBlZjgzY2RjOWE2ZmE4MWJhNmNhODg5M2FmZTM5ZTEzMjNmOTY4YmM4MGU1OCJ9.52d0cd6c146dd62ebda934f02142a7de345bc59ded03edb568a0d329d34aae05"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"fields\": {\n    \"Nom de l'entité\": \"Restaurant Malagasy Thunder\",\n    \"Catégorie\": \"Formation\",\n    \"Description\": \"Restaurant traditionnel malgache test complet via Thunder Client\",\n    \"Contact\": \"+261 34 12 345 67\",\n    \"Email\": \"contact@restaurant-malagasy.mg\",\n    \"Adresse\": \"Avenue de l'Indépendance, Antananarivo\",\n    \"Région\": \"Antananarivo\",\n    \"Statut\": \"En attente\",\n    \"Lien du site web\": \"https://restaurant-malagasy.mg\",\n    \"Réseaux Sociaux\": \"https://facebook.com/restaurant.malagasy\"\n  }\n}"
+      },
+      "tests": []
+    }
+  ]
+}

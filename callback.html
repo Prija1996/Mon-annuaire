@@ -75,19 +75,33 @@
 
         // Fonction principale
         async function handleCallback() {
+            console.log('Callback OAuth - Analyse des paramètres');
+            console.log('URL complète:', window.location.href);
+            console.log('Search params:', window.location.search);
+
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
             const error = urlParams.get('error');
+            const errorDescription = urlParams.get('error_description');
             const state = urlParams.get('state');
             const storedState = localStorage.getItem('oauth_state');
 
-            console.log('Paramètres URL:', window.location.search);
-            console.log('Code:', code);
-            console.log('State reçu:', state);
-            console.log('State stocké:', storedState);
+            console.log('Analyse détaillée:');
+            console.log('  Code:', code);
+            console.log('  Error:', error);
+            console.log('  Error Description:', errorDescription);
+            console.log('  State reçu:', `"${state}"`);
+            console.log('  State stocké:', `"${storedState}"`);
+
+            // Lister tous les paramètres
+            console.log('Tous les paramètres reçus:');
+            for (let [key, value] of urlParams) {
+                console.log(`  ${key}: "${value}"`);
+            }
 
             // Vérifier le state pour la sécurité
             if (state !== storedState) {
+                console.log('Échec de vérification state:', { received: state, stored: storedState });
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('error').style.display = 'block';
                 document.getElementById('error').textContent = 'Erreur de sécurité : State invalide';
